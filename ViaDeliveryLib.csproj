@@ -30,6 +30,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -40,7 +44,36 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApiParameters.cs" />
+    <Compile Include="Client.cs" />
+    <Compile Include="CreatedOrder.cs" />
+    <Compile Include="CreateOrderRequestResult.cs" />
+    <Compile Include="Customer.cs" />
+    <Compile Include="Delivery.cs" />
+    <Compile Include="DeliveryPoint.cs" />
+    <Compile Include="GeoType.cs" />
+    <Compile Include="HttpLoader.cs" />
+    <Compile Include="IHttpLoader.cs" />
+    <Compile Include="InsalesOrderRequestBody.cs" />
+    <Compile Include="InSalesPoint.cs" />
+    <Compile Include="InSalesPointListRequestBody.cs" />
+    <Compile Include="Iserializer.cs" />
+    <Compile Include="JsonSerializer.cs" />
+    <Compile Include="OrderItem.cs" />
+    <Compile Include="OrderStatusRequestResult.cs" />
+    <Compile Include="Package.cs" />
+    <Compile Include="Payment.cs" />
+    <Compile Include="PickupPoint.cs" />
+    <Compile Include="PickupPointsRequestResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RefObject.cs" />
+    <Compile Include="RefObjectRequestResult.cs" />
+    <Compile Include="RequestHelper.cs" />
+    <Compile Include="RequestSettings.cs" />
+    <Compile Include="TestObjects.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
