@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ViaDeliveryLib
+﻿namespace ViaDeliveryLib
 {
     /// <summary>
     /// Интерфейс компонентов для сериализации и десериализации
