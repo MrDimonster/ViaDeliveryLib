@@ -1,4 +1,4 @@
-﻿namespace ViaDeliveryLib
+﻿namespace ViaDeliveryLib.Enums
 {
     /// <summary>
     /// Тип объекта

@@ -51,8 +51,9 @@
     <Compile Include="Customer.cs" />
     <Compile Include="Delivery.cs" />
     <Compile Include="DeliveryPoint.cs" />
+    <Compile Include="Enums\OrderStatus.cs" />
     <Compile Include="Example.cs" />
-    <Compile Include="GeoType.cs" />
+    <Compile Include="Enums\GeoType.cs" />
     <Compile Include="HttpLoader.cs" />
     <Compile Include="IHttpLoader.cs" />
     <Compile Include="InsalesOrderRequestBody.cs" />

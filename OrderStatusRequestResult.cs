@@ -1,8 +1,10 @@
-﻿namespace ViaDeliveryLib
+﻿using ViaDeliveryLib.Enums;
+
+namespace ViaDeliveryLib
 {
     public class OrderStatusData
     {
-        public string Status { get; set; }
+        public OrderStatus Status { get; set; }
         public string Barcode { get; set; }
     }
 
