@@ -47,10 +47,10 @@ namespace ViaDeliveryLib
         /// <param name="pointId">Id точки</param>
         /// <param name="rs"></param>
         /// <returns></returns>
-        public async Task<DeliveryPoint> GetDeliveryPointByIdAsync(string pointId, RequestSettings rs = null) //t-ok
+        public Task<DeliveryPoint> GetDeliveryPointByIdAsync(string pointId, RequestSettings rs = null)
         {
             string url = $"https://map-api.viadelivery.pro/point-list?id={_shopId}&point_id={pointId}";
-            return await TryGetObjectAsync<DeliveryPoint>(url, HttpMethod.Get, rs ?? _defaultRequestSettings);
+            return TryGetObjectAsync<DeliveryPoint>(url, HttpMethod.Get, rs ?? _defaultRequestSettings);
         }
 
         /// <summary>
@@ -71,10 +71,10 @@ namespace ViaDeliveryLib
         /// <param name="pars"></param>
         /// <param name="rs"></param>
         /// <returns></returns>
-        public async Task<List<DeliveryPoint>> GetDeliveryPointsAsync(ApiParameters pars, RequestSettings rs = null) //t-ok
+        public Task<List<DeliveryPoint>> GetDeliveryPointsAsync(ApiParameters pars, RequestSettings rs = null) //t-ok
         {
             string url = $"https://map-api.viadelivery.pro/point-list" + pars.ToUrlQuery();
-            return await TryGetObjectAsync<List<DeliveryPoint>>(url, HttpMethod.Get, rs ?? _defaultRequestSettings);
+            return TryGetObjectAsync<List<DeliveryPoint>>(url, HttpMethod.Get, rs ?? _defaultRequestSettings);
         }
 
         /// <summary>
@@ -113,7 +113,7 @@ namespace ViaDeliveryLib
         /// <param name="rs"></param>
         /// <param name="filterCountry">позволяет включить фильтрацию по коду страны. если не задан = RU</param>
         /// <returns></returns>
-        public async Task<List<string>> GetGeoDictionaryVariantsAsync(GeoType type, string filterKeyword,
+        public Task<List<string>> GetGeoDictionaryVariantsAsync(GeoType type, string filterKeyword,
             string filterCity, string fiterRegion, RequestSettings rs = null, string filterCountry = "RU") //t-ok
         {
             string url = $"https://map-api.viadelivery.pro/geo-dictionary?type={type.ToString().ToLower()}";
@@ -122,7 +122,7 @@ namespace ViaDeliveryLib
             if (!string.IsNullOrWhiteSpace(filterCity)) url += ($"&filter_city={filterCity}");
             if (!string.IsNullOrWhiteSpace(filterKeyword)) url += ($"&filter_keyword={filterKeyword}");
 
-            return await TryGetObjectAsync<List<string>>(url, HttpMethod.Get, rs ?? _defaultRequestSettings);
+            return TryGetObjectAsync<List<string>>(url, HttpMethod.Get, rs ?? _defaultRequestSettings);
         }
  
         /// <summary>
@@ -138,8 +138,8 @@ namespace ViaDeliveryLib
         /// </summary>
         /// <param name="language"></param>
         /// <returns>RefObjectRequestResult</returns>
-        public async Task<RefObjectRequestResult> GetCountriesAsync(string language = "RU", RequestSettings rs = null)
-            => await GetObjectsAsync("country", null, null, null, rs, language); //t-ok
+        public Task<RefObjectRequestResult> GetCountriesAsync(string language = "RU", RequestSettings rs = null)
+            => GetObjectsAsync("country", null, null, null, rs, language); //t-ok
 
         /// <summary>
         /// Получение списка регионов
@@ -164,9 +164,9 @@ namespace ViaDeliveryLib
         /// <param name="language"></param>
         /// <param name="rs"></param>
         /// <returns></returns>
-        public async Task<RefObjectRequestResult> GetRegionsAsync(long masterId,
+        public Task<RefObjectRequestResult> GetRegionsAsync(long masterId,
             long? limit = null, long? offset = null, string language = "RU", RequestSettings rs = null)
-            => await GetObjectsAsync("region", masterId, limit, offset, rs, language); //t-ok
+            => GetObjectsAsync("region", masterId, limit, offset, rs, language); //t-ok
 
         /// <summary>
         /// Получение списка городов асинхронно
@@ -178,9 +178,9 @@ namespace ViaDeliveryLib
         /// <param name="offset">отступ в строчках</param>
         /// <param name="language">язык выдачи</param>
         /// <returns></returns>
-        public async Task<RefObjectRequestResult> GetCitiesAsync(long masterId, 
+        public Task<RefObjectRequestResult> GetCitiesAsync(long masterId, 
             long? limit = null, long? offset = null, string language = "RU", RequestSettings rs = null) 
-            => await GetObjectsAsync("city", masterId, limit, offset, rs, language); //t-ok
+            => GetObjectsAsync("city", masterId, limit, offset, rs, language); //t-ok
 
         /// <summary>
         /// Получение списка городов 
@@ -219,9 +219,9 @@ namespace ViaDeliveryLib
         /// <param name="language"></param>
         /// <param name="rs"></param>
         /// <returns></returns>
-        public async Task<RefObjectRequestResult> GetStreetsAsync(long masterId,
+        public Task<RefObjectRequestResult> GetStreetsAsync(long masterId,
             long? limit = null, long? offset = null, string language = "RU", RequestSettings rs = null)
-            => await GetObjectsAsync("street", masterId, limit, offset, rs, language); //t-ok
+            => GetObjectsAsync("street", masterId, limit, offset, rs, language); //t-ok
 
         /// <summary>
         /// Получение списка точек доставки
@@ -302,12 +302,12 @@ namespace ViaDeliveryLib
         /// </summary>
         /// <param name="orderId">ID заказа в системе службы доставки</param>
         /// <returns>результат ответа сервера с информацией о статусе</returns>
-        public async Task<OrderStatusRequestResult> GetOrderStatusAsync(string orderId, RequestSettings rs = null) //t-ok
+        public Task<OrderStatusRequestResult> GetOrderStatusAsync(string orderId, RequestSettings rs = null) //t-ok
         {
             var r = (rs ?? RequestSettings.CreateNew()).SetJson();
             r.Body = _serializer.SerializeObject(new { OrderId = orderId });
             var url = _apiUrl + "/api/get_order_status?sid=@" + _securityToken;
-            return await TryGetObjectAsync<OrderStatusRequestResult>(url, HttpMethod.Post, r);
+            return TryGetObjectAsync<OrderStatusRequestResult>(url, HttpMethod.Post, r);
         }
  
         //todo Не прверялось
@@ -363,13 +363,13 @@ namespace ViaDeliveryLib
             return TryGetObject<RefObjectRequestResult>(url, HttpMethod.Post, r);
         }
 
-        private async Task<RefObjectRequestResult> GetObjectsAsync(string type,
+        private Task<RefObjectRequestResult> GetObjectsAsync(string type,
             long? masterId, long? limit, long? offset, RequestSettings rs = null, string language = "RU")
         {
             var r = (rs ?? RequestSettings.CreateNew()).SetJson();
             r.Body = _serializer.SerializeObject(new { Language = language, Type = type, Limit = limit, Offset = offset, MasterId = masterId });
             var url = _apiUrl + "/api/get_objects?sid=@" + _securityToken;
-            return await TryGetObjectAsync<RefObjectRequestResult>(url, HttpMethod.Post, r);
+            return TryGetObjectAsync<RefObjectRequestResult>(url, HttpMethod.Post, r);
         }
  
         private PickupPointsRequestResult GetPickupObjects(string type, 
@@ -381,13 +381,13 @@ namespace ViaDeliveryLib
             return TryGetObject<PickupPointsRequestResult>(url, HttpMethod.Post, r);
         }
 
-        private async Task<PickupPointsRequestResult> GetPickupObjectsAsync(string type,
+        private Task<PickupPointsRequestResult> GetPickupObjectsAsync(string type,
             long? masterId, long? limit, long? offset, RequestSettings rs = null, string language = "RU")
         {
             var r = (rs ?? RequestSettings.CreateNew()).SetJson();
             r.Body = _serializer.SerializeObject(new { Language = language, Type = type, Limit = limit, Offset = offset, MasterId = masterId });
             var url = _apiUrl + "/api/get_objects?sid=@" + _securityToken;
-            return await TryGetObjectAsync<PickupPointsRequestResult>(url, HttpMethod.Post, r);
+            return TryGetObjectAsync<PickupPointsRequestResult>(url, HttpMethod.Post, r);
         }
 
         private T TryGetObject<T>(string url, HttpMethod httpMethod, RequestSettings rs)
@@ -403,7 +403,7 @@ namespace ViaDeliveryLib
         private async Task<T> TryGetObjectAsync<T>(string url, HttpMethod httpMethod, RequestSettings rs)
             where T : class
         {
-            var responseString = await _httpLoader.GetStringAsync(url, httpMethod, rs ?? _defaultRequestSettings);
+            var responseString = await _httpLoader.GetStringAsync(url, httpMethod, rs ?? _defaultRequestSettings).ConfigureAwait(false);
             if (string.IsNullOrWhiteSpace(responseString)) { throw new Exception("Возникла ошибка при отправке или при получении данных от сервера."); }
             var deserializedObject = AnswerToObject<T>(responseString, _serializer);
             if (deserializedObject == null) { throw new Exception($"Возникла ошибка при десериализации данных к типу {typeof(T)}. Данные: ({responseString})"); }

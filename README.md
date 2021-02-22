@@ -2,7 +2,7 @@
 
 .net Via.Delivery client.
 
-How to use: Example.cs
+How to use: see Tests
 
 .net version: 4.6.1
 

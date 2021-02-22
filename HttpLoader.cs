@@ -38,13 +38,13 @@ namespace ViaDeliveryLib
             try
             {
                 ServicePointManager.SecurityProtocol = spt;
-                using (var response = (HttpWebResponse)await CreateRequest(url, httpMethod, requestSettings).GetResponseAsync())
+                using (var response = (HttpWebResponse)await CreateRequest(url, httpMethod, requestSettings).GetResponseAsync().ConfigureAwait(false))
                 {
                     using (var streamResponse = response.GetResponseStream())
                     {
                         using (var streamReader = new StreamReader(streamResponse))
                         {
-                            result = await streamReader.ReadToEndAsync();
+                            result = await streamReader.ReadToEndAsync().ConfigureAwait(false);
                         }
                     }
                 }
