@@ -10,10 +10,18 @@ namespace Tests
 {
     public class BaseClientTest
     {
-        protected Client _client;
+        protected IClient _client;
         private string _settingsFolder = @"C:\CS\viadelivery_settings\";
-        public BaseClientTest()
+        private bool _useFakeClient = true;
+        public BaseClientTest(bool useFakeClient)
         {
+            _useFakeClient = useFakeClient;
+            if (_useFakeClient)
+            {
+                _client = new FakeClient();
+                return;
+            }
+
             var shopId = App("ShopId");
             if (string.IsNullOrWhiteSpace(shopId))
             {
@@ -32,12 +40,12 @@ namespace Tests
             _client = new Client(shopId, securityToken, apiUrl);
         }
 
-        protected string App(string key)
+        private string App(string key)
         {
             return ReadFile(Path.Combine(_settingsFolder, key + ".txt"));
         }
 
-        protected string ReadFile(string file)
+        private string ReadFile(string file)
         {
             try 
             { 

@@ -10,6 +10,7 @@ namespace Tests
 {
     public class Tests : BaseClientTest
     {
+        public Tests(): base(useFakeClient: false) { }
         [Fact]
         public void GetCountriesTests()
         {

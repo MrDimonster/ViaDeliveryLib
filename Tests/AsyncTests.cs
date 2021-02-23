@@ -10,6 +10,7 @@ namespace Tests
 {
     public class AsyncTests : BaseClientTest
     {
+        public AsyncTests() : base(useFakeClient: false){ }
         [Fact]
         public async Task GetCountriesAsyncTests()
         {
@@ -104,6 +105,34 @@ namespace Tests
             var geoAsync = await _client.GetGeoDictionaryVariantsAsync(ViaDeliveryLib.Enums.GeoType.City,
                 "кин", "", "Московская область");
             Assert.True(geoAsync != null && geoAsync.Count > 0);
+        }
+
+        [Fact]
+        public async Task GetCountriesWhenAllAsyncTests()
+        {
+            var countries1Task = _client.GetCountriesAsync();
+            var countries2Task = _client.GetCountriesAsync();
+            var countries3Task = _client.GetCountriesAsync();
+            await Task.WhenAll(countries1Task, countries2Task, countries3Task);
+            var result = 0;
+            try
+            {
+                result += countries1Task.Result.Data.Count;
+            }
+            catch{ }
+            try
+            {
+                result += countries1Task.Result.Data.Count;
+            }
+            catch { }
+            try
+            {
+                result += countries1Task.Result.Data.Count;
+            }
+            catch { }
+ 
+            Assert.True(result > 0);
+             
         }
 
     }

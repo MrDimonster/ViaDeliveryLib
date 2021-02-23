@@ -149,5 +149,39 @@ namespace ViaDeliveryLib
 
             return true;
         }
+
+        public async Task<bool> DownloadFileAsync(string url, HttpMethod httpMethod, string saveToFullPath,
+            RequestSettings requestSettings, SecurityProtocolType spt = SecurityProtocolType.Tls12)
+        {
+            try
+            {
+                ServicePointManager.SecurityProtocol = spt;
+                const int BUFFER_SIZE = 16 * 1024;
+                using (var outputFileStream = File.Create(saveToFullPath, BUFFER_SIZE))
+                {
+                    var request = CreateRequest(url, httpMethod, requestSettings);
+                    using (var response = await request.GetResponseAsync().ConfigureAwait(false))
+                    {
+                        using (var responseStream = response.GetResponseStream())
+                        {
+                            var buffer = new byte[BUFFER_SIZE];
+                            int bytesRead;
+                            do
+                            {
+                                bytesRead = responseStream.Read(buffer, 0, BUFFER_SIZE);
+                                outputFileStream.Write(buffer, 0, bytesRead);
+                            }
+                            while (bytesRead > 0);
+                        }
+                    }
+                }
+            }
+            catch
+            {
+                return false;
+            }
+
+            return true;
+        }
     }
 }
